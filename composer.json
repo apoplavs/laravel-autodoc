@@ -1,0 +1,31 @@
+{
+  "name": "apoplavs/laravel-autodoc",
+  "description": "Provided middleware for auto generating of swagger-documentation file by run testing of RESTful API.",
+  "keywords": [
+    "laravel",
+    "openapi",
+    "swagger",
+    "testing",
+    "auto-documentation"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andrii Poplavskyi",
+      "email": "p.andriy.v@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "laravel/framework": ">=5.3.0",
+    "minime/annotations": "2.3.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Apoplavs\\Support\\AutoDoc\\": "src/"
+    },
+    "exclude-from-classmap": [
+      "src/Tests/"
+    ]
+  }
+}
