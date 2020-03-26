@@ -110,11 +110,11 @@ return [
     | if you want to use YAMLDataCollector you must install yaml extension
     | in your PHP
     |
-    | If config not set, will be using apoplavs/local-data-collector
     */
 
     'data_collector' => \Apoplavs\Support\AutoDoc\DataCollectors\JsonDataCollector::class,
     //'data_collector' => \Apoplavs\Support\AutoDoc\DataCollectors\YAMLDataCollector::class,
 
-    'enabled'        => env('AUTODOC_ENABLED', false),
+    'enabled'         => env('AUTODOC_ENABLED', false),
+    'production_path' => env('LOCAL_DATA_COLLECTOR_PROD_PATH', '/tmp/documentation.json')
 ];

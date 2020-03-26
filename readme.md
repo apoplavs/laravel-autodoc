@@ -1,7 +1,7 @@
 # Laravel AutoDoc plugin 
 
-This plugin is designed to gather information and generate documentation about 
-your Rest-Api while passing the tests. The principle of operation is based on 
+This library is designed to gather information passing the features tests and generate documentation 
+about your API. The principle of operation is based on 
 the fact that the special Middleware installed on the Route for which you want 
 to collect information that after the successful completion of all tests 
 generated Swagger-file. In addition this plug-in is able to draw Swagger-template 
@@ -23,15 +23,22 @@ to display the generated documentation for a config.
  some defaults descriptions and route for rendering of documentation. 
  1. In *.env* file you should add following lines
     `
-    LOCAL_DATA_COLLECTOR_PROD_PATH=/example-folder/documentation.json  
+    AUTODOC_ENABLED=true
+    LOCAL_DATA_COLLECTOR_PROD_PATH=/example-folder/documentation.json
     LOCAL_DATA_COLLECTOR_TEMP_PATH=/tmp/documentation.json
     `
+    
+AUTODOC_ENABLED - enable or disable generate of documentation when passing a tests
+LOCAL_DATA_COLLECTOR_..._PATH - custom path to your generated documentation file 
 
 ## Usages
  For correct working of plugin you have to dispose all the validation rules in the rules() method of class YourRequest, 
  which must be connected to the controller via DependencyInjection. In annotation of custom request you can specify 
  summary and description of this request. Plugin will take validation rules from your request and use it as description 
- of input parameter. 
+ of input parameter.
+ If you want to set to common description of your API endpoints you can rewrite swagger-description.blade.php in your views
+ and customize as you want. It will be render as blade template.
+ 
   
 ### Example
 
@@ -44,6 +51,7 @@ to display the generated documentation for a config.
  
  /**
   * @summary Updating of user
+  * @security false
   *
   * @description
   *  This request mostly needed to specity flags <strong>free_comparison</strong> and 
@@ -82,6 +90,9 @@ to display the generated documentation for a config.
  - **@summary** - short description of request
  - **@description** - Implementation Notes
  - **@_204** - Custom description of code of response. You can specify any code as you want.
+ - **@security** - ['bearerAuth', 'basicAuth', 'ApiKeyAuth', false] Depending on what you need 
+ null - disable of security for this request (when in common it set);
+  ['bearerAuth', 'basicAuth', 'ApiKeyAuth'] - set specific type of security for this request
  
  If you do not create a class Request, the summary, Implementation Notes and parameters will be empty. 
  Plugin will collect codes and examples of responses only.

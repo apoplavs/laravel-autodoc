@@ -14,7 +14,7 @@ class YAMLDataCollector implements DataCollectorInterface
 
     public function __construct()
     {
-        $this->prodFilePath = config('local-data-collector.production_path');
+        $this->prodFilePath = config('auto-doc.production_path');
 
         if (empty($this->prodFilePath)) {
             throw new MissedProductionFilePathException();

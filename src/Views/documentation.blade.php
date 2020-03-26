@@ -68,8 +68,8 @@
 
 <div id="swagger-ui"></div>
 
-<script src="/auto-doc/swagger-ui-bundle.js"></script>
-<script src="/auto-doc/swagger-ui-standalone-preset.js"></script>
+<script src="/vendor/auto-doc/swagger-ui-bundle.js"></script>
+<script src="/vendor/auto-doc/swagger-ui-standalone-preset.js"></script>
 <script>
   window.onload = function () {
     // Build a system

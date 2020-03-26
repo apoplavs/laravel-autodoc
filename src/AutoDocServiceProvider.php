@@ -20,6 +20,10 @@ class AutoDocServiceProvider extends ServiceProvider
             __DIR__ . '/Views/swagger-description.blade.php' => resource_path('views/swagger-description.blade.php'),
         ], 'view');
 
+        $this->publishes([
+            __DIR__ . '/Views/swagger' => public_path('vendor/auto-doc'),
+        ], 'public');
+
         if (!$this->app->routesAreCached()) {
             require __DIR__ . '/Http/routes.php';
         }
