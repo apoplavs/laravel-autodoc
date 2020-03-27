@@ -22,13 +22,14 @@ to display the generated documentation for a config.
  1. In *config/auto-doc.php* you can specify enabling of plugin, info of your project, 
  some defaults descriptions and route for rendering of documentation. 
  1. In *.env* file you should add following lines
-    `
+    ```
     AUTODOC_ENABLED=true
     LOCAL_DATA_COLLECTOR_PROD_PATH=/example-folder/documentation.json
     LOCAL_DATA_COLLECTOR_TEMP_PATH=/tmp/documentation.json
-    `
+    ```
     
 AUTODOC_ENABLED - enable or disable generate of documentation when passing a tests
+
 LOCAL_DATA_COLLECTOR_..._PATH - custom path to your generated documentation file 
 
 ## Usages
@@ -105,9 +106,22 @@ LOCAL_DATA_COLLECTOR_..._PATH - custom path to your generated documentation file
  2. Default description from *auto-doc.defaults.code-descriptions.{$code}*
  3. Descriptions from **Symfony\Component\HttpFoundation\Response::$statusTexts**
   
-  Note about configs:  
- - *auto-doc.route* - it's a route where will be located generated documentation  
- - *auto-doc.basePath* - it's a route where located root of your api
+### Note about configs:  
+ - *auto-doc.route* - it's a route where will be located generated documentation
+ - *auto-doc.basePath* - common route where located root of your all API
+ - *auto-doc.info* - common info about your documentation 
+ - *auto-doc.servers* - list of which (hosts) you can use when you test your endpoints
+ - *auto-doc.basePath* - base path for your API routes, this will be considered as common path of your endpoints
+ - *auto-doc.security* - type of authorization to your API routes. Available values: "bearerAuth", "basicAuth", "ApiKeyAuth", ""
+ - *auto-doc.defaults.code-descriptions* - custom description of your API responses. 
+ For example, if when test passed and API endpoint return code 200, by default as description will be write "OK"
+ but if you add to this array element '200' => 'Custom description'. 
+ When your API endpoint return code 200, as description will be write "Custom description"
+ - *auto-doc.data_collector* - it's a type of collect your document with API documentation.
+ Thin library support JSON and YAML types. If you want to use YAMLDataCollector 
+ you must install yaml extension in your PHP https://www.php.net/manual/en/yaml.setup.php
+ - *auto-doc.enabled* - it's just a flag enable (true) or disable (false) generate documentation when run tests
+ 
  
 Also you can specify way to collect documentation by creating your custom data collector class.
  
