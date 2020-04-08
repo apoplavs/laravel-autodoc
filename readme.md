@@ -115,8 +115,9 @@ LOCAL_DATA_COLLECTOR_..._PATH - custom path to your generated documentation file
  - *auto-doc.security* - type of authorization to your API routes. Available values: "bearerAuth", "basicAuth", "ApiKeyAuth", ""
  - *auto-doc.defaults.code-descriptions* - custom description of your API responses. 
  For example, if when test passed and API endpoint return code 200, by default as description will be write "OK"
- but if you add to this array element '200' => 'Custom description'. 
+ but if you add to this array element '200' => 'Custom description'.
  When your API endpoint return code 200, as description will be write "Custom description"
+ - *auto-doc.defaults.headers* - Default headers for add to each requests.
  - *auto-doc.data_collector* - it's a type of collect your document with API documentation.
  Thin library support JSON and YAML types. If you want to use YAMLDataCollector 
  you must install yaml extension in your PHP https://www.php.net/manual/en/yaml.setup.php

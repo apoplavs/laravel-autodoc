@@ -94,6 +94,16 @@ return [
             '404' => 'This entity not found',
             '405' => 'Method Not Allowed',
             '422' => 'The given data was invalid'
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default headers for add to each requests
+        |--------------------------------------------------------------------------
+        */
+
+        'headers' => [
+            'X-Requested-With' => 'XMLHttpRequest'
         ]
     ],
 

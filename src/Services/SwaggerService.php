@@ -117,12 +117,12 @@ class SwaggerService
      *
      * @return array
      */
-    protected function getServers() : array
+    protected function getServers(): array
     {
         $currentServer = [
-                "url" => config('app.url'),
-                "description" => 'This app server URL'
-            ];
+            "url"         => config('app.url'),
+            "description" => 'This app server URL'
+        ];
 
         return array_merge([$currentServer], config('auto-doc.servers'));
     }
@@ -154,18 +154,18 @@ class SwaggerService
                 ];
                 break;
             case 'basicAuth':
-                $securityConfig =  [
-                    'description'  => 'Base64-encoded string username:password',
-                    'type'         => 'http',
-                    'scheme'       => 'basic'
+                $securityConfig = [
+                    'description' => 'Base64-encoded string username:password',
+                    'type'        => 'http',
+                    'scheme'      => 'basic'
                 ];
                 break;
             case 'ApiKeyAuth':
-                $securityConfig =  [
-                    'description'  => 'Header X-API-KEY with your value',
-                    'type'         => 'apiKey',
-                    'in'           => 'header',
-                    'name'         => 'X-API-KEY'
+                $securityConfig = [
+                    'description' => 'Header X-API-KEY with your value',
+                    'type'        => 'apiKey',
+                    'in'          => 'header',
+                    'name'        => 'X-API-KEY'
                 ];
                 break;
             default:
@@ -239,11 +239,11 @@ class SwaggerService
             $key = preg_replace('/[{}]/', '', $param);
 
             $result[] = [
-                'in' => 'path',
-                'name' => $key,
+                'in'          => 'path',
+                'name'        => $key,
                 'description' => '',
-                'required' => true,
-                'type' => 'string'
+                'required'    => true,
+                'type'        => 'string'
             ];
         }
 
@@ -354,10 +354,29 @@ class SwaggerService
 
         $actionName = $this->getActionName($this->uri);
 
+        $this->addDefaultHeaders();
+
         if (in_array($this->method, ['get', 'delete'])) {
             $this->saveGetRequestParameters($rules, $annotations);
         } else {
             $this->savePostRequestParameters($actionName, $rules, $annotations);
+        }
+    }
+
+    protected function addDefaultHeaders()
+    {
+        $defaultHeaders = config('auto-doc.defaults.headers');
+
+        foreach ($defaultHeaders as $headerName => $headerValue) {
+            $this->item['parameters'][] = [
+                'in'          => 'header',
+                'name'        => $headerName,
+                'description' => '',
+                'required'    => true,
+                'schema'      => [
+                    "default" => $headerValue
+                ]
+            ];
         }
     }
 
@@ -368,16 +387,17 @@ class SwaggerService
 
             $description = $annotations->get($parameter, implode(', ', $validation));
 
-            $existedParameter = Arr::first($this->item['parameters'], function ($existedParameter, $key) use ($parameter) {
-                return $existedParameter['name'] == $parameter;
-            });
+            $existedParameter = Arr::first($this->item['parameters'],
+                function ($existedParameter, $key) use ($parameter) {
+                    return $existedParameter['name'] == $parameter;
+                });
 
             if (empty($existedParameter)) {
                 $parameterDefinition = [
-                    'in' => 'query',
-                    'name' => $parameter,
+                    'in'          => 'query',
+                    'name'        => $parameter,
                     'description' => $description,
-                    'type' => $this->getParameterType($validation)
+                    'type'        => $this->getParameterType($validation)
                 ];
                 if (in_array('required', $validation)) {
                     $parameterDefinition['required'] = true;
@@ -393,11 +413,11 @@ class SwaggerService
         if ($this->requestHasMoreProperties($actionName)) {
             if ($this->requestHasBody()) {
                 $this->item['parameters'][] = [
-                    'in' => 'body',
-                    'name' => 'body',
+                    'in'          => 'body',
+                    'name'        => 'body',
                     'description' => '',
-                    'required' => true,
-                    'schema' => [
+                    'required'    => true,
+                    'schema'      => [
                         "\$ref" => "#/components/parameters/{$actionName}Object"
                     ]
                 ];
@@ -410,7 +430,7 @@ class SwaggerService
     protected function saveDefinitions($objectName, $rules, $annotations)
     {
         $data = [
-            'type' => 'object',
+            'type'       => 'object',
             'properties' => []
         ];
         foreach ($rules as $parameter => $rule) {
@@ -432,14 +452,14 @@ class SwaggerService
         $this->data['components']['parameters'][$objectName . 'Object'] = $data;
     }
 
-    protected function convertArrToString(array $rules=[]) : string
+    protected function convertArrToString(array $rules = []): string
     {
         $strParams = '';
 
         foreach ($rules as $key => $rule) {
-           if (is_string($rule)) {
-               $strParams .= $rule . '|';
-           }
+            if (is_string($rule)) {
+                $strParams .= $rule . '|';
+            }
         }
 
         return substr($strParams, 0, -1);
@@ -448,14 +468,14 @@ class SwaggerService
     protected function getParameterType(array $validation)
     {
         $validationRules = [
-            'array' => 'object',
+            'array'   => 'object',
             'boolean' => 'boolean',
-            'date' => 'date',
-            'digits' => 'integer',
-            'email' => 'string',
+            'date'    => 'date',
+            'digits'  => 'integer',
+            'email'   => 'string',
             'integer' => 'integer',
             'numeric' => 'double',
-            'string' => 'string'
+            'string'  => 'string'
         ];
 
         $parameterType = 'string';
@@ -477,8 +497,12 @@ class SwaggerService
         ];
     }
 
-    protected function saveParameterDescription(&$data, $parameter, array $rulesArray, AnnotationsBagInterface $annotations)
-    {
+    protected function saveParameterDescription(
+        &$data,
+        $parameter,
+        array $rulesArray,
+        AnnotationsBagInterface $annotations
+    ) {
         $description = $annotations->get($parameter, implode(', ', $rulesArray));
         $data['properties'][$parameter]['description'] = $description;
     }
@@ -677,6 +701,7 @@ class SwaggerService
         } elseif (Response::$statusTexts[$code]) {
             return Response::$statusTexts[$code];
         }
+
         return null;
     }
 
@@ -692,6 +717,7 @@ class SwaggerService
             }
             $action .= Str::ucfirst(Str::camel($partUri));
         }
+
         return $action;
     }
 
@@ -720,6 +746,7 @@ class SwaggerService
         foreach ($ret as &$match) {
             $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
         }
+
         return implode('_', $ret);
     }
 
@@ -777,12 +804,12 @@ class SwaggerService
     private function getDefaultValueByType($type)
     {
         $values = [
-            'object' => 'null',
+            'object'  => 'null',
             'boolean' => false,
-            'date' => "0000-00-00",
+            'date'    => "0000-00-00",
             'integer' => 0,
-            'string' => '',
-            'double' => 0
+            'string'  => '',
+            'double'  => 0
         ];
 
         return $values[$type];
@@ -836,7 +863,7 @@ class SwaggerService
             "Please add it or mark in the test that you do not want to collect the \n" .
             "documentation for this case using the skipDocumentationCollecting() method\n";
 
-        fwrite(STDERR, print_r($message, TRUE));
+        fwrite(STDERR, print_r($message, true));
 
         die;
     }
