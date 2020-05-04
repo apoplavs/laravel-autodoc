@@ -90,6 +90,7 @@ LOCAL_DATA_COLLECTOR_..._PATH - custom path to your generated documentation file
  
  - **@summary** - short description of request
  - **@description** - Implementation Notes
+ - **@skip-autodoc** true - skip generate documentation for this request
  - **@_204** - Custom description of code of response. You can specify any code as you want.
  - **@security** - ['bearerAuth', 'basicAuth', 'ApiKeyAuth', false] Depending on what you need 
  null - disable of security for this request (when in common it set);

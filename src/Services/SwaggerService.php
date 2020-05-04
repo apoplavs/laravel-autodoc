@@ -191,7 +191,12 @@ class SwaggerService
 
         $this->prepareItem();
 
-        $this->parseRequest();
+        $skipRequest = $this->parseRequest();
+
+        if ($skipRequest) {
+            return;
+        }
+
         $this->parseResponse($response);
 
         $this->dataCollector->saveTmpData($this->data);
@@ -265,15 +270,21 @@ class SwaggerService
             $this->item['description'] = '';
             $this->saveSecurity(null);
 
-            return;
+            return false;
         }
 
         $annotations = $this->annotationReader->getClassAnnotations($concreteRequest);
+
+        if ($annotations->get('skip-autodoc')) {
+            return true;
+        }
 
         $this->saveSecurity($annotations->get('security'));
         $this->saveParameters($concreteRequest, $annotations);
         $this->saveSummary($concreteRequest, $annotations);
         $this->saveDescription($annotations);
+
+        return false;
     }
 
     protected function parseResponse($response)
