@@ -12,6 +12,10 @@ class JsonDataCollector implements DataCollectorInterface
 
     protected static $data;
 
+    /**
+     * JsonDataCollector constructor.
+     * @throws \Apoplavs\Support\AutoDoc\Exceptions\MissedProductionFilePathException
+     */
     public function __construct()
     {
         $this->prodFilePath = config('auto-doc.production_path');
@@ -39,6 +43,10 @@ class JsonDataCollector implements DataCollectorInterface
         self::$data = [];
     }
 
+    /**
+     * @return mixed
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
     public function getDocumentation()
     {
         if (!file_exists($this->prodFilePath)) {

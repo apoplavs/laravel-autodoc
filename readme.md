@@ -32,6 +32,8 @@ AUTODOC_ENABLED - enable or disable generate of documentation when passing a tes
 
 LOCAL_DATA_COLLECTOR_..._PATH - custom path to your generated documentation file 
 
+You can disable autodoc for one test, just need before running  test, set `AutoDocMiddleware::$skipped = true;`
+
 ## Usages
  For correct working of plugin you have to dispose all the validation rules in the rules() method of class YourRequest, 
  which must be connected to the controller via DependencyInjection. In annotation of custom request you can specify 

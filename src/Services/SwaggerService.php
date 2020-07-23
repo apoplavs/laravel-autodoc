@@ -41,6 +41,13 @@ class SwaggerService
     private $item;
     private $security;
 
+    /**
+     * SwaggerService constructor.
+     * @param \Illuminate\Container\Container $container
+     * @throws \Apoplavs\Support\AutoDoc\Exceptions\DataCollectorClassNotFoundException
+     * @throws \Apoplavs\Support\AutoDoc\Exceptions\WrongSecurityConfigException
+     * @throws \Throwable
+     */
     public function __construct(Container $container)
     {
         $this->setDataCollector();
@@ -546,6 +553,7 @@ class SwaggerService
      * Get concrete class of Request
      * witch take the function
      * @return mixed|null
+     * @throws \Exception
      */
     public function getConcreteRequest()
     {
@@ -558,6 +566,11 @@ class SwaggerService
         $explodedController = explode('@', $controller);
 
         $class = $explodedController[0];
+
+        if (!array_key_exists(1, $explodedController)) {
+            throw new \Exception('Controller does not have the method or using magic methods');
+        }
+
         $method = $explodedController[1];
 
         $instance = app($class);
@@ -699,6 +712,12 @@ class SwaggerService
         return preg_replace('/[_]/', ' ', $underscoreRequestName);
     }
 
+    /**
+     * @param $code
+     * @return \Illuminate\Config\Repository|mixed|null
+     * @throws \ReflectionException
+     * @throws \Exception
+     */
     protected function getResponseDescription($code)
     {
         $request = $this->getConcreteRequest();
