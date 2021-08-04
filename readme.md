@@ -129,3 +129,4 @@ You can disable autodoc for one test, just need before running  test, set `AutoD
  
 Also you can specify way to collect documentation by creating your custom data collector class.
  
+ **This plugin based on https://github.com/RonasIT/laravel-swagger**
